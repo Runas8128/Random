@@ -2,6 +2,7 @@
 
 from Commands import *
 from Slashes  import *
+from random import random
 
 # 봇이 켜졌을때 실행
 
@@ -54,14 +55,24 @@ async def on_message(message):
 
 	# 키워드에 반응
 	if '!!' in msg:
-		await message.add_reaction('<:brilliant:840225769632301066>')
+		await message.add_reaction('<:brilliant:864664970799874120>')
 	if '?' in msg:
 		if '??' in msg:
-			await message.add_reaction('<:blunder:840225769476849674>')
+			if random()<0.96:
+				await message.add_reaction('<:blunder:864664935631683614>')
+			else:
+				await ch.send('<:mia:882839095653568533>')
 		if msg.count('?!') == 1:
-			await message.add_reaction('<:inaccuracy:840225769665724436>')
+			await message.add_reaction('<:inaccuracy:864664944644718653>')
 		if msg == '?':
-			await message.add_reaction('<:mistake:840225769656942652>')
+			if random()<0.98:
+				await message.add_reaction('<:mistake:864664953537167380>')
+			else:
+				await ch.send('<:mia:882839095653568533>')
+	if ('원신' in msg) and (random()<0.5):
+		await message.add_reaction('<:genshin:864823001869451284>')
+	if (('저런' in msg) or ('절너' in msg)) and (random()<0.1):
+		await ch.send('<:wjfsj:902174408448286741>')
 
 	# 랜덤핑 적용
 	if '<@!810020540064333834>' in msg or '<@810020540064333834>' in msg:

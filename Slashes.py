@@ -24,3 +24,10 @@ async def sc_Sundong(ctx):
 )
 async def sc_Sun(ctx):
 	await ctx.send('선넘내..')
+
+@slash.slash(
+	name='고대공줌',
+	description='고대공줌 바로가기'
+)
+async def sc_GDGZoom(ctx):
+	await ctx.send('***REMOVED*** \n ***REMOVED***')
