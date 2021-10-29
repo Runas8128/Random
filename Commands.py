@@ -60,7 +60,7 @@ async def clearDB(ctx):
 
 @bot.command(name='코드보기')
 async def ShowCode(ctx):
-	await ctx.send('https://replit.com/@Runas8128/Random')
+	await ctx.send('https://github.com/Runas8128/Random')
 
 @bot.command(name='계산')
 async def _eval(ctx, *expr):
