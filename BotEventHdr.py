@@ -101,9 +101,14 @@ async def on_message(message):
 	elif msg.replace('!', '') == '<@449837429885763584>' and ch.id == 871408004875059200:
 		await ch.send(message.author.mention)
 
+	# 핑크색 양 스폰
+	elif random()<0.001558:
+		await ch.send('https://cdn.discordapp.com/attachments/903552936511148082/903571862884339712/Pink_Sheep_JE4__.png')
+
 	# 커맨드 실행
 	else:
 		await bot.process_commands(message)
+
 
 # :pin: 반응 달렸을때 고정
 @bot.event
