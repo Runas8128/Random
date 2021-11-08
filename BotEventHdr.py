@@ -133,4 +133,3 @@ async def on_command_error(ctx, error):
 	if not isinstance(error, commands.CommandNotFound):
 		raise error
 
-# 이 파일 주석만 해도 귀찮아서 나머지 안함 엌ㅋㅋ
