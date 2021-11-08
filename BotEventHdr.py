@@ -73,6 +73,8 @@ async def on_message(message):
 		await message.add_reaction('<:genshin:864823001869451284>')
 	if (('저런' in msg) or ('절너' in msg)) and (random()<0.1):
 		await ch.send('<:wjfsj:902174408448286741>')
+	if '흥.' == msg and ch.id == 864541135585673228:
+		await ch.send('https://cdn.discordapp.com/attachments/853207469987594283/907241951273836574/a83bc7fe05d7b6ad.jpg')
 
 	# 랜덤핑 적용
 	if '<@!810020540064333834>' in msg or '<@810020540064333834>' in msg:
