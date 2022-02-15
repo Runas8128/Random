@@ -2,18 +2,6 @@
 
 from Parser import *
 
-@bot.command(name='고스트핑')
-async def RD_GhostPing(ctx, nf=''):
-	nf = nf.upper()
-	guild = Parser.get(ctx.guild.id)
-	if nf in ['ON', '켜기', 'OFF', '끄기']:
-		guild.GhostPing(nf in ['ON', '켜기'])
-		await ctx.message.add_reaction('👌')
-	elif nf == '':
-		await ctx.send(f"지금 고스트핑은 {'켜' if guild.db['ghost'] else '꺼'}져있어요")
-	else:
-		await ctx.send('ON/OFF나 켜기, 끄기 이런것 좀 입력해주실래요?')
-
 @bot.command(name='일시정지')
 async def RD_Pause(ctx):
 	if ctx.message.author.id == 449837429885763584:
@@ -30,7 +18,7 @@ async def RD_Restart(ctx):
 	else:
 		await ctx.send('제작자 전용이래요')
 
-@bot.group(name='화이트', aliases=['화이트리스트'])
+@bot.group(name='화이트', aliases=['화이트리스트', '화리'])
 async def RD_WhiteList(ctx):
 	if ctx.invoked_subcommand == None:
 		parser = Parser.get(ctx.guild.id)

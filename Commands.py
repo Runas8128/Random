@@ -27,42 +27,13 @@ async def giveAll(ctx, role: discord.Role):
 
 @bot.command()
 async def cls(ctx):
-	system('cls')
+	system('clear') # for unix
 	await ctx.message.add_reaction('👌')
 
 @bot.command(name='기만')
 async def GIMAN(ctx):
 	await ctx.send("삐빅! 기만이 감지되었습니다")
 
-@bot.command(name='db')
-async def _db(ctx, *, var:str='All'):
-	if var == 'All':
-		if not db.keys():
-			await ctx.send('Empty')
-		else:
-			for key in db.keys():
-				s = f'{key}: {toGen(db[key])}'
-				for i in range(0, len(s), 1000):
-					await ctx.send(s[i:i+1000])
-	elif var.lower() == 'key':
-		await ctx.send(db.keys() or 'No key in DB')
-	else:
-		await ctx.send(db.get(var, 'Not in DB'))
-
-@bot.command()
-async def clearDB(ctx):
-	if ctx.message.author.id == 449837429885763584:
-		for key in db.keys():
-			del db[key]
-		await ctx.send('done')
-	else:
-		await ctx.send('개발자용 디버깅 명령어입니다')
-
 @bot.command(name='코드보기')
 async def ShowCode(ctx):
 	await ctx.send('https://github.com/Runas8128/Random')
-
-@bot.command(name='계산')
-async def _eval(ctx, *expr):
-	await ctx.send(f"계산값: {eval(' '.join(expr))}")
-	

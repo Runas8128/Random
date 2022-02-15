@@ -6,11 +6,13 @@ from os import listdir, path, getenv, system
 
 from   random    import shuffle, random
 from   time      import time
+from   datetime import datetime, timedelta, timezone
 import re
 from   pprint    import pp
 
 # from replit import db
 # from replit.database.database import ObservedList, OvservedDict
+db = {}
 
 import discord
 from   discord.ext import tasks, commands
@@ -42,3 +44,6 @@ def toGen(tmp):
 			return dict(tmp)
 	'''
 	return tmp
+
+def now():
+    return datetime.now(timezone(timedelta(hours=9)))

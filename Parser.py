@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 
+from typing import Dict, List, Optional, Tuple
 from Common import *
 
 class R_User:
@@ -19,7 +20,7 @@ class _Parser:
 				'whiteList': [],
 				'ghost': False, 'limit': 0, 'paused': False
 			}
-		self.db = db[guildID]
+		self.db: dict = db[guildID]
 
 	def __eq__(self, item: int):
 		return item == self.guild
@@ -30,7 +31,7 @@ class _Parser:
 	def remDB(self, key, val):
 		self.db[key].remove(val)
 
-	def canPing(self, tarID: int, time: float):
+	def canPing(self, tarID: int, time: float) -> bool:
 		lrps = [
 			self.db['time'][idx] \
 			for idx in range(len(self.db['time'])) \
@@ -46,30 +47,33 @@ class _Parser:
 	def Resume(self):
 		self.db['paused'] = False
 
-	def AddWhiteList(self, idList: list):
+	def AddWhiteList(self, idList: List[int]):
 		if 'whiteList' not in self.db:
 			self.db['whiteList'] = []
 		for id in idList:
 			if id not in self.db['whiteList']:
 				self.addDB('whiteList', id)
 		return len(self.getDB('whiteList'))
-	def RemWhiteList(self, idList: list):
+
+	def RemWhiteList(self, idList: List[int]):
 		if 'whiteList' not in self.db:
 			return 0
 		for id in idList:
 			if id in self.db['whiteList']:
 				self.remDB('whiteList', id)
 		return len(self.db['whiteList'])
-	def SetWhiteList(self, idList: list):
+
+	def SetWhiteList(self, idList: List[int]):
 		self.db['whiteList'] = idList
 		return len(self.db['whiteList'])
-	def GetWhiteList(self):
+
+	def GetWhiteList(self) -> List[int]:
 		return self.db['whiteList']
 
 	def setTimeLimit(self, newLim: int):
 		self.db['limit'] = newLim
 
-	def getRandomPings(self, counts: int):
+	def getRandomPings(self, counts: int) -> Optional[List[int]]:
 		tar = []
 		tar = self.db.get('whiteList', []) or [
 			user.id \
@@ -86,35 +90,9 @@ class _Parser:
 
 		return f"<@!{pinged}>"
 
-	def WhoCalledMe(self, pinged: int):
-		now = time()
-		sliceIdx = self.db['time'].index([x for x in self.db['time'] if now - x <= 3 * 60 * 60][0]) - 1
-		
-		if sliceIdx != -1:
-			self.db['ed'] = self.db['ed'][sliceIdx:]
-			self.db['ing'] = self.db['ing'][sliceIdx:]
-			self.db['time'] = self.db['time'][sliceIdx:]
-		
-		return ', '.join([
-			bot.get_user(self.db['ing'][idx]).display_name \
-			for idx in range(len(self.db['ing'])) \
-			if self.db['ed'][idx] == pinged
-		])
-		
-	def HowManyCalledMe(self, pinged: int):
-		now = time()
-		sliceIdx = self.db['time'].index([x for x in self.db['time'] if now - x <= 3 * 60 * 60][0]) - 1
-		
-		if sliceIdx != -1:
-			self.db['ed'] = self.db['ed'][sliceIdx:]
-			self.db['ing'] = self.db['ing'][sliceIdx:]
-			self.db['time'] = self.db['time'][sliceIdx:]
-		
-		return self.db['ed'].count(pinged)
-
 class ParserWrapper:
 	def __init__(self):
-		self.dict = {}
+		self.dict: Dict[int, _Parser] = {}
 
 	def get(self, guildID: int):
 		if guildID not in self.dict:
@@ -123,7 +101,7 @@ class ParserWrapper:
 
 Parser = ParserWrapper()
 
-def AdaptRandomPing(message, time):
+def AdaptRandomPing(message: discord.Message, time: float) -> str:
 	msg = message.content
 	atr = message.author
 	gd  = message.guild
@@ -132,7 +110,7 @@ def AdaptRandomPing(message, time):
 	parserObj = Parser.get(gd.id)
 
 	if parserObj.db['paused']:
-		return '랜덤핑 정지돼있는데요', False
+		return '랜덤핑 정지돼있는데요'
 
 	if parserObj.canPing(atr.id, time):
 		isNTimes = len(ss) == 2 and ss[1].isdigit()
@@ -143,17 +121,17 @@ def AdaptRandomPing(message, time):
 		)
 
 		if pingTars == None:
-			return '???: 설마 이만큼 랜덤핑을 박겠어 아 ㅋㅋ', False
+			return '???: 설마 이만큼 랜덤핑을 박겠어 아 ㅋㅋ'
 		
 		pings = [parserObj.ping(atr.id, user) for user in pingTars]
 		
 		if isNTimes:
-			return ' '.join(pings), parserObj.db['ghost']
+			return ' '.join(pings)
 		else:
 			while '<@!810020540064333834>' in msg:
 				msg = msg.replace('<@!810020540064333834>', pings.pop(), 1)
 			while '<@810020540064333834>' in msg:
 				msg = msg.replace('<@810020540064333834>', pings.pop(), 1)
-			return msg, parserObj.db['ghost']
+			return msg
 	else:
-		return '시간제한!', False
+		return '시간제한!'
