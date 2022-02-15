@@ -93,17 +93,18 @@ async def on_message(message: discord.Message):
 	else:
 		await bot.process_commands(message)
 
-# :pin: 반응 달렸을때 고정
 @bot.event
 async def on_raw_reaction_add(payload: discord.RawReactionActionEvent):
-    if payload.emoji == '📌':
+    emoji: discord.PartialEmoji = payload.emoji
+    if emoji.name == '📌':
         ch: discord.TextChannel = bot.get_channel(payload.channel_id)
         msg = await ch.fetch_message(payload.message_id)
         await msg.pin()
 
 @bot.event
 async def on_raw_reaction_remove(payload: discord.RawReactionActionEvent):
-    if payload.emoji == '📌':
+    emoji: discord.PartialEmoji = payload.emoji
+    if emoji.name == '📌':
         ch: discord.TextChannel = bot.get_channel(payload.channel_id)
         msg = await ch.fetch_message(payload.message_id)
         await msg.unpin()
